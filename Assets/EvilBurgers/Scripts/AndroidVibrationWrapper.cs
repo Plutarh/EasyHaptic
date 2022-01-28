@@ -24,31 +24,42 @@ namespace EasyHaptic_EvilBurgers
         // Play one shot vibration 
         public void AndroidOneShotVibration(long milliseconds, int amplitude)
         {
-            if (isVibroInitialized == false)
-                InitVibration();
+            Initialize();
 
-            // Maximum amplitude for android by https://developer.android.com/ is 255
-            if(amplitude > 255) amplitude = 255; 
-
-            AndroidJavaObject vibration = vibrationEffect.CallStatic<AndroidJavaObject>("createOneShot", new object[] { milliseconds, amplitude });
-
-            androidVibrator.Call("vibrate", vibration);
+            if(GetApiLevel() > 26)
+            {
+                AndroidJavaObject vibration = vibrationEffect.CallStatic<AndroidJavaObject>("createOneShot", new object[] { milliseconds, amplitude });
+                androidVibrator.Call("vibrate", vibration);
+            }
+            else
+            {
+                androidVibrator.Call("vibrate", milliseconds);
+            }
+          
         }
 
         // Play waveform vibration
         public void AndroidWaveformVibration(long[] millisecondsPattern, int[] amplitudesPattern, int repeat = -1)
         {
-            if (isVibroInitialized == false)
-                InitVibration();
+            Initialize();
 
-            AndroidJavaObject vibration = vibrationEffect.CallStatic<AndroidJavaObject>("createWaveform", new object[] { millisecondsPattern, amplitudesPattern, repeat });
-
-            androidVibrator.Call("vibrate", vibration);
+            if (GetApiLevel() > 26)
+            {
+                AndroidJavaObject vibration = vibrationEffect.CallStatic<AndroidJavaObject>("createWaveform", new object[] { millisecondsPattern, /*amplitudesPattern,*/ repeat });
+                androidVibrator.Call("vibrate", vibration);
+            }
+            else
+            {
+                androidVibrator.Call("vibrate", millisecondsPattern, repeat);
+            }
+          
         }
 
         // Connection to android activity stream
         void InitMainActivity()
         {
+            if(unityPlayerActivity != null && currentActivity != null) return;
+
             // Get unity android stream
             unityPlayerActivity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 
@@ -100,6 +111,14 @@ namespace EasyHaptic_EvilBurgers
             {
                 return version.GetStatic<int>("SDK_INT");
             }
+        }
+
+        public void StopVibration()
+        {
+            if(isVibroInitialized)
+                androidVibrator.Call("cancel");
+            else
+                Initialize();
         }
 
         public bool HasAmplitudeControl()

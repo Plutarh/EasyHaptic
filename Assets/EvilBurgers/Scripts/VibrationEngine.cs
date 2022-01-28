@@ -11,25 +11,11 @@ namespace EasyHaptic_EvilBurgers
 {
     public sealed class VibrationEngine
     {
-        
-
         AndroidVibrationWrapper androidVibrationWrapper = new AndroidVibrationWrapper();
 
-
-        public void TestVibro()
-        {
-            if (androidVibrationWrapper.isActivityInitialized == false)
-                androidVibrationWrapper.Initialize();
-
-
-            androidVibrationWrapper.AndroidOneShotVibration(40, 80);
-        }
-
+       
         public void PlayCustomVibro(long milliseconds, int amplitude)
         {
-            if (androidVibrationWrapper.isActivityInitialized == false)
-                androidVibrationWrapper.Initialize();
-
             androidVibrationWrapper.AndroidOneShotVibration(milliseconds, amplitude);
         }
 
@@ -43,9 +29,19 @@ namespace EasyHaptic_EvilBurgers
             androidVibrationWrapper.AndroidOneShotVibration(AndroidPredifinedVariables.mediumImpactDuration, AndroidPredifinedVariables.mediumImpactAmplitude);
         }
 
+        public void PlayHeavyImpact()
+        {
+            androidVibrationWrapper.AndroidOneShotVibration(AndroidPredifinedVariables.heavyImpactDuration, AndroidPredifinedVariables.heavyImpactAmplitude);
+        }
+
         public void PlaySuccessPattern()
         {
             androidVibrationWrapper.AndroidWaveformVibration(AndroidPredifinedVariables.successPatternDuration, AndroidPredifinedVariables.successPatternAmplitude);
+        }
+
+        public void PlayWarningPattern()
+        {
+            androidVibrationWrapper.AndroidWaveformVibration(AndroidPredifinedVariables.warningPatternDuration, AndroidPredifinedVariables.warningPatternAmplitude);
         }
 
         public void PlayFailurePattern()

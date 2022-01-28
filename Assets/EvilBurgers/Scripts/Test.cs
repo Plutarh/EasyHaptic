@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EasyHaptic_EvilBurgers;
 using UnityEngine.UI;
+using System;
 
 public class Test : MonoBehaviour
 {
@@ -16,33 +17,55 @@ public class Test : MonoBehaviour
 
     public Text amplitudeControll;
 
+    public Button btnPrefab;
 
-    // public void PlayCustom()
-    // {
-    //     customMilliseconds = 0;
-    //     customAmplitude = 0;
+    public Gradient buttonsColor;
 
-    //     customMilliseconds = long.Parse(millisecondsInput.text);
-    //     customAmplitude = int.Parse(amplitudeInput.text);
+    public GameObject buttonsGroup;
 
-    //     EasyHaptic.PlayCustomVibro(customMilliseconds, customAmplitude);
-    //     Debug.LogError($"Custom Vibro amplitude {customAmplitude} / duration {customMilliseconds}");
+    List<Button> allButtons = new List<Button>();
 
-    //     amplitudeControll.text = $"Android API level - {AndroidVibrationWrapper.GetApiLevel()} \n Vibrator - {EasyHaptic.android.HasVibrator()} \n Amplitude Controll - {EasyHaptic.android.HasAmplitudeControl()}";
-    // }
-
-    public void SuccessPattern()
+    private void Awake() 
     {
-        EasyHaptic.Play(EVibrationType.Success);
+        CreateTestButtons();
+        SetButtonsColor();
     }
 
-    public void FailurePattern()
+    void CreateTestButtons()
     {
-        EasyHaptic.Play(EVibrationType.Failure);
+        foreach (EVibrationType type in (EVibrationType[])Enum.GetValues(typeof(EVibrationType)))
+        {
+            Button createdBtn = Instantiate(btnPrefab,buttonsGroup.transform);
+
+            createdBtn.GetComponentInChildren<Text>().text = type.ToString();
+
+            createdBtn.onClick.AddListener(() => EasyHaptic.Play(type));
+            allButtons.Add(createdBtn);
+        }
+
+        btnPrefab.gameObject.SetActive(false);
     }
 
-    public void LightImpact()
+    void SetButtonsColor()
     {
-        EasyHaptic.Play(EVibrationType.MediumImpact);
+        for (int i = 0; i < allButtons.Count; i++)
+        {
+            var btn = allButtons[i];
+
+            float lerpredValue = (float)i / (float)allButtons.Count;
+            Color lerpedColor = buttonsColor.Evaluate(lerpredValue);
+            btn.GetComponent<Image>().color = lerpedColor;
+        }
+    }
+
+    public void PlayCustom()
+    {
+        customMilliseconds = 0;
+        customAmplitude = 0;
+
+        customMilliseconds = long.Parse(millisecondsInput.text);
+        customAmplitude = int.Parse(amplitudeInput.text);
+
+        EasyHaptic.PlayCustom(customMilliseconds, customAmplitude);
     }
 }

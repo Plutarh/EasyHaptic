@@ -6,8 +6,12 @@ namespace EasyHaptic_EvilBurgers
 
       
 
-        public static void  Play(EVibrationType vibrationType)
+        public static void Play(EVibrationType vibrationType)
         {
+
+#if UNITY_EDITOR
+            return;
+#endif
             switch (vibrationType)
             {
                 case EVibrationType.LightImpact:
@@ -17,16 +21,27 @@ namespace EasyHaptic_EvilBurgers
                     vibrationEngine.PlayMediumImpact();
                     break;
                 case EVibrationType.HeavyImpact:
+                    vibrationEngine.PlayHeavyImpact();
                     break;
                 case EVibrationType.Success:
                     vibrationEngine.PlaySuccessPattern();
                     break;
                 case EVibrationType.Warning:
+                    vibrationEngine.PlayWarningPattern();
                     break;
                 case EVibrationType.Failure:
                     vibrationEngine.PlayFailurePattern();
                     break;
             }
+        }
+
+        public static void PlayCustom(long duration, int amplitude)
+        {
+
+#if UNITY_EDITOR
+            return;
+#endif
+            vibrationEngine.PlayCustomVibro(duration,amplitude);
         }
     }
 }
