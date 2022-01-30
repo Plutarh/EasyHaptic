@@ -12,8 +12,16 @@ namespace EasyHaptic_EvilBurgers
     public sealed class VibrationEngine
     {
         AndroidVibrationWrapper androidVibrationWrapper = new AndroidVibrationWrapper();
+        IosVibrationWrapper iosVibrationWrapper = new IosVibrationWrapper();
 
-       
+        [RuntimeInitializeOnLoadMethod]
+        public void GloablInitialize()
+        {
+            androidVibrationWrapper.Initialize();
+
+            iosVibrationWrapper.Initialize();
+        }
+
         public void PlayCustomVibro(long milliseconds, int amplitude)
         {
             androidVibrationWrapper.AndroidOneShotVibration(milliseconds, amplitude);
