@@ -1,6 +1,7 @@
 
 import Foundation
 import CoreHaptics
+import AudioToolbox
 
 @available(iOS 13.0, *)
 @objc public class UnityPlugin : NSObject {
@@ -22,7 +23,7 @@ import CoreHaptics
         print("GERA TEST START INIT");
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else
         {
-            print("Device not support CHHapticEngine");
+            print("GERA Device not support CHHapticEngine");
             return;
         }
         
@@ -32,6 +33,7 @@ import CoreHaptics
         }
         catch let error
         {
+            print("GERA ERROR");
             dump(error);
         }
         print("GERA TEST INIT");
@@ -54,7 +56,82 @@ import CoreHaptics
            let player = try engine?.makePlayer(with: pattern)
            try player?.start(atTime: 0)
         } catch {
-           print("Failed to play pattern: \(error.localizedDescription).")
+           print("GERA Failed to play pattern: \(error.localizedDescription).")
+        }
+    }
+    
+    @objc public func PlayHaptic(type : Int) -> Void
+    {
+        
+        
+        switch (type)
+        {
+            case 1:
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+
+            case 2:
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+
+            case 3:
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.warning)
+
+            case 4:
+            let generator = UIImpactFeedbackGenerator(style: .light)
+            generator.impactOccurred()
+
+            case 5:
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+
+            case 6:
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+
+            default:
+            let generator = UISelectionFeedbackGenerator()
+            generator.selectionChanged()
+          
+        }
+    }
+    
+    public func PlayHapticIphone6(type : Int) -> Void
+    {
+        switch (type)
+        {
+            case 0:
+                AudioServicesPlaySystemSound(1521);
+                break;
+            
+            case 1:
+                AudioServicesPlaySystemSound(1521);
+                break;
+            
+            case 2:
+                AudioServicesPlaySystemSound(1521);
+                break;
+            
+            case 3:
+                AudioServicesPlaySystemSound(1519);
+                break;
+            
+            case 4:
+                AudioServicesPlaySystemSound(1519);
+                break;
+            
+            case 5:
+                AudioServicesPlaySystemSound(1520);
+                break;
+            
+            case 6:
+                AudioServicesPlaySystemSound(1519);
+                break;
+            
+            default:
+                //Do nothing, should never reach here
+                break;
         }
     }
 }
