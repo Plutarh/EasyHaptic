@@ -6,23 +6,41 @@ extern "C" {
     
 #pragma mark - Functions
     
-    int _addTwoNumberInIOS(int a , int b) {
-       
-        int result = [[UnityPlugin shared] AddTwoNumberWithA:(a) b:(b)];
-        return result;
-    }
 
     void _StartEngine()
     {
-
-        [[UnityPlugin shared] StartEngine];
-
-    
-
+        if (@available(iOS 13, *))
+        {
+            [[UnityPlugin shared] StartEngine];
+        }
     }
 
     void _PlayTest()
     {
-        [[UnityPlugin shared] PlayTestVib];
+        if (@available(iOS 13, *))
+        {
+            [[UnityPlugin shared] PlayTestVib];
+        }
+    }
+
+    void _PlayCustom(float intensity, float sharpness, double duration = 0)
+    {
+        if (@available(iOS 13, *))
+        {
+            [[UnityPlugin shared] PlayCustomWithIntens:(intensity) sharp:(sharpness) dur:(duration)];
+        }
+    }
+
+    bool _IsHapticAvailable()
+    {
+        if (@available(iOS 13, *))
+        {
+            return  [[UnityPlugin shared] IsHapticAvailable];
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 }

@@ -3,27 +3,26 @@ import Foundation
 import CoreHaptics
 import AudioToolbox
 
+
 @available(iOS 13.0, *)
 @objc public class UnityPlugin : NSObject {
     
     @objc public static let shared = UnityPlugin()
     
-    
+   
     @objc public var engine : CHHapticEngine!;
     
-    @objc public func AddTwoNumber(a:Int,b:Int ) -> Int {
-           
-           let result = a+b;
-           return result;
-       }
     
+    @objc public func IsHapticAvailable() -> Bool
+    {
+        return CHHapticEngine.capabilitiesForHardware().supportsHaptics;
+    }
     
     @objc public func StartEngine() -> Void
     {
-        print("GERA TEST START INIT");
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else
         {
-            print("GERA Device not support CHHapticEngine");
+            print("Device not support CHHapticEngine");
             return;
         }
         
@@ -33,37 +32,79 @@ import AudioToolbox
         }
         catch let error
         {
-            print("GERA ERROR");
             dump(error);
         }
-        print("GERA TEST INIT");
+        
+        engine?.start(completionHandler: { (error) in
+            
+         })
+        
+        engine?.stoppedHandler = { reason in
+          print("Haptic engine stopped due to reason: \(reason)")
+        }
+        
+        engine?.resetHandler = {
+            
+            print("Reset Handler: Restarting the engine.")
+            
+            do {
+                print("Try restart haptic engine")
+                try self.engine.start()
+
+            } catch {
+                fatalError("Failed to restart the Haptic engine: \(error)")
+            }
+        }
     }
     
     @objc public func PlayTestVib() -> Void
     {
-        let short1 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 0)
-        let short2 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 0.2)
-        let short3 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 0.4)
-        let long1 = CHHapticEvent(eventType: .hapticContinuous, parameters: [], relativeTime: 0.6, duration: 0.5)
-        let long2 = CHHapticEvent(eventType: .hapticContinuous, parameters: [], relativeTime: 1.2, duration: 0.5)
-        let long3 = CHHapticEvent(eventType: .hapticContinuous, parameters: [], relativeTime: 1.8, duration: 0.5)
-        let short4 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 2.4)
-        let short5 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 2.6)
-        let short6 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 2.8)
+        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
 
-        do {
-           let pattern = try CHHapticPattern(events: [short1, short2, short3, long1, long2, long3, short4, short5, short6], parameters: [])
+        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
+        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
+        let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
+       
+        
+        do
+        {
+           let pattern = try CHHapticPattern(events: [event], parameters: [])
            let player = try engine?.makePlayer(with: pattern)
            try player?.start(atTime: 0)
-        } catch {
-           print("GERA Failed to play pattern: \(error.localizedDescription).")
+            
+        }
+        catch
+        {
+           print("Failed to play pattern: \(error.localizedDescription).")
+        }
+    }
+    
+    @objc public func PlayCustom(intens:Float,sharp:Float ,dur: Double) -> Void
+    {
+        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+
+        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: intens)
+        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: sharp)
+        //let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0, duration: dur)
+        
+        let event = CHHapticEvent(eventType: dur > 0 ? .hapticContinuous : .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0, duration: dur)
+       
+        
+        do
+        {
+           let pattern = try CHHapticPattern(events: [event], parameters: [])
+           let player = try engine?.makePlayer(with: pattern)
+           try player?.start(atTime: 0)
+            
+        }
+        catch
+        {
+           print("Failed to play pattern: \(error.localizedDescription).")
         }
     }
     
     @objc public func PlayHaptic(type : Int) -> Void
     {
-        
-        
         switch (type)
         {
             case 1:
@@ -130,8 +171,9 @@ import AudioToolbox
                 break;
             
             default:
-                //Do nothing, should never reach here
+                AudioServicesPlaySystemSound(1519);
                 break;
         }
     }
 }
+
