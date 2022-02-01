@@ -17,19 +17,45 @@ namespace EasyHaptic_EvilBurgers
         [RuntimeInitializeOnLoadMethod]
         public void GloablInitialize()
         {
+#if UNITY_ANDROID && !UNITY_EDITOR
             androidVibrationWrapper.Initialize();
+#elif UNITY_IOS && !UNITY_EDITOR
 
             iosVibrationWrapper.Initialize();
+#endif
         }
 
         public void PlayCustomVibro(long milliseconds, int amplitude)
         {
+#if UNITY_ANDROID //&& !UNITY_EDITOR
             androidVibrationWrapper.AndroidOneShotVibration(milliseconds, amplitude);
+            androidVibrationWrapper.Initialize();
+#elif UNITY_IOS //&& !UNITY_EDITOR
+
+           // iosVibrationWrapper.PlayCustom();
+#endif
+            
+        }
+
+        public void PlayTyped(EVibrationType type)
+        {
+#if UNITY_ANDROID //&& !UNITY_EDITOR
+            
+#elif UNITY_IOS //&& !UNITY_EDITOR
+
+            iosVibrationWrapper.PlayHaptic(type);
+#endif
         }
 
         public void PlayLightImpact()
         {
+#if UNITY_ANDROID //&& !UNITY_EDITOR
             androidVibrationWrapper.AndroidOneShotVibration(AndroidPredifinedVariables.lightImpactDuration,AndroidPredifinedVariables.lightImpactAmplitude);
+#elif UNITY_IOS //&& !UNITY_EDITOR
+
+            //iosVibrationWrapper.pla();
+#endif
+
         }
 
         public void PlayMediumImpact()

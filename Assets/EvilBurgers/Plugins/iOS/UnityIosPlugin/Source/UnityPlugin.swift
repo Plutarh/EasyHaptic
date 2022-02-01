@@ -2,7 +2,18 @@
 import Foundation
 import CoreHaptics
 import AudioToolbox
+import UIKit
 
+
+@objc public enum EVibrationType : Int
+{
+    case LightImpact
+    case MediumImpact
+    case HeavyImpact
+    case Success
+    case Warning
+    case Failure
+};
 
 @available(iOS 13.0, *)
 @objc public class UnityPlugin : NSObject {
@@ -10,6 +21,7 @@ import AudioToolbox
     @objc public static let shared = UnityPlugin()
     
    
+    
     @objc public var engine : CHHapticEngine!;
     
     
@@ -103,8 +115,51 @@ import AudioToolbox
         }
     }
     
-    @objc public func PlayHaptic(type : Int) -> Void
+    @objc public func PlayHaptic(typeInt : Int) -> Void
     {
+        var type : EVibrationType!;
+        
+        type = EVibrationType(rawValue: typeInt);
+        
+        print("try play \(typeInt)");
+        print("try play with type \(String(describing: type))" );
+        
+        switch(type)
+        {
+            case .LightImpact:
+            
+            let generator = UIImpactFeedbackGenerator(style: .light)
+            generator.impactOccurred()
+            
+            case .MediumImpact:
+            
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            
+            case .HeavyImpact:
+            
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+            
+            case .Failure:
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            
+            case .Warning:
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.warning)
+            
+            case .Success:
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            default :
+            print("Unknow vibration type");
+        }
+        /*
         switch (type)
         {
             case 1:
@@ -135,7 +190,7 @@ import AudioToolbox
             let generator = UISelectionFeedbackGenerator()
             generator.selectionChanged()
           
-        }
+        }*/
     }
     
     public func PlayHapticIphone6(type : Int) -> Void

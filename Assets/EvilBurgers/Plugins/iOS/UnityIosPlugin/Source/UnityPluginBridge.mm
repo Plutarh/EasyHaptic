@@ -2,9 +2,15 @@
 #import <Foundation/Foundation.h>
 #include "UnityFramework/UnityFramework-Swift.h"
 
+
+
+
+
 extern "C" {
     
 #pragma mark - Functions
+    
+
     
 
     void _StartEngine()
@@ -21,6 +27,11 @@ extern "C" {
         {
             [[UnityPlugin shared] PlayTestVib];
         }
+    }
+
+    void _PlayHaptic(int type)
+    {
+        [[UnityPlugin shared] PlayHapticWithTypeInt:(type)];
     }
 
     void _PlayCustom(float intensity, float sharpness, double duration = 0)

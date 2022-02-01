@@ -12,6 +12,10 @@ namespace EasyHaptic_EvilBurgers
 #if UNITY_EDITOR
             return;
 #endif
+
+            vibrationEngine.PlayTyped(vibrationType);
+
+            return;
             switch (vibrationType)
             {
                 case EVibrationType.LightImpact:
