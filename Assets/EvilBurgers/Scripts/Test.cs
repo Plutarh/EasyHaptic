@@ -7,13 +7,10 @@ using System;
 
 public class Test : MonoBehaviour
 {
-    
-
-    public long customMilliseconds;
-    public int customAmplitude;
 
     public InputField millisecondsInput;
     public InputField amplitudeInput;
+    public InputField sharpnessInput;
 
     public Text amplitudeControll;
 
@@ -60,12 +57,19 @@ public class Test : MonoBehaviour
 
     public void PlayCustom()
     {
-        customMilliseconds = 0;
-        customAmplitude = 0;
+        long customDurationInSeconds = 0;
+        int customAmplitude = 0;
+        float sharpness = 0;
 
-        customMilliseconds = long.Parse(millisecondsInput.text);
+        customDurationInSeconds = long.Parse(millisecondsInput.text);
         customAmplitude = int.Parse(amplitudeInput.text);
+        sharpness = float.Parse(sharpnessInput.text);
 
-        EasyHaptic.PlayCustom(customMilliseconds, customAmplitude);
+        CustomVibrationData customData = new CustomVibrationData();
+        customData.amplitude = customAmplitude;
+        customData.durationInSeconds = customDurationInSeconds;
+        customData.sharpness = sharpness;
+
+        EasyHaptic.PlayCustom(customData);
     }
 }

@@ -26,6 +26,34 @@ namespace EasyHaptic_EvilBurgers
 
         }
 
+        public void PlayHaptic(EVibrationType type)
+        {
+#if UNITY_ANDROID
+
+            switch (type)
+            {
+                case EVibrationType.LightImpact:
+                    AndroidOneShotVibration(AndroidPredifinedVariables.lightImpactDuration, AndroidPredifinedVariables.lightImpactAmplitude);
+                    break;
+                case EVibrationType.MediumImpact:
+                    AndroidOneShotVibration(AndroidPredifinedVariables.mediumImpactDuration, AndroidPredifinedVariables.mediumImpactAmplitude);
+                    break;
+                case EVibrationType.HeavyImpact:
+                    AndroidOneShotVibration(AndroidPredifinedVariables.heavyImpactDuration, AndroidPredifinedVariables.heavyImpactAmplitude);
+                    break;
+                case EVibrationType.Success:
+                    AndroidWaveformVibration(AndroidPredifinedVariables.successPatternDuration, AndroidPredifinedVariables.successPatternAmplitude);
+                    break;
+                case EVibrationType.Warning:
+                    AndroidWaveformVibration(AndroidPredifinedVariables.warningPatternDuration, AndroidPredifinedVariables.warningPatternAmplitude);
+                    break;
+                case EVibrationType.Failure:
+                    AndroidWaveformVibration(AndroidPredifinedVariables.failurePatternDuration, AndroidPredifinedVariables.failurePatternAmplitude);
+                    break;
+            }
+#endif
+        }
+
         // Play one shot vibration 
         public void AndroidOneShotVibration(long milliseconds, int amplitude)
         {
@@ -49,7 +77,7 @@ namespace EasyHaptic_EvilBurgers
         // Play waveform vibration
         public void AndroidWaveformVibration(long[] millisecondsPattern, int[] amplitudesPattern, int repeat = -1)
         {
-            #if UNITY_ANDROID
+#if UNITY_ANDROID
             Initialize();
 
             if (GetApiLevel() > 26)
@@ -67,7 +95,7 @@ namespace EasyHaptic_EvilBurgers
         // Connection to android activity stream
         void InitMainActivity()
         {
-            #if UNITY_ANDROID
+#if UNITY_ANDROID
             if(unityPlayerActivity != null && currentActivity != null) return;
 
             // Get unity android stream
@@ -93,7 +121,7 @@ namespace EasyHaptic_EvilBurgers
         // Connection to android.os.VibrationEffect class
         void InitVibration()
         {
-            #if UNITY_ANDROID
+#if UNITY_ANDROID
             if (isActivityInitialized == false)
             {
                 Initialize();

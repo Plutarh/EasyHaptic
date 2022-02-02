@@ -15,73 +15,40 @@ namespace EasyHaptic_EvilBurgers
         IosVibrationWrapper iosVibrationWrapper = new IosVibrationWrapper();
 
         [RuntimeInitializeOnLoadMethod]
-        public void GloablInitialize()
-        {
-#if UNITY_ANDROID && !UNITY_EDITOR
-            androidVibrationWrapper.Initialize();
-#elif UNITY_IOS && !UNITY_EDITOR
-
-            iosVibrationWrapper.Initialize();
-#endif
-        }
-
-        public void PlayCustomVibro(long milliseconds, int amplitude)
+        public void GlobalInitialize()
         {
 #if UNITY_ANDROID //&& !UNITY_EDITOR
-            androidVibrationWrapper.AndroidOneShotVibration(milliseconds, amplitude);
             androidVibrationWrapper.Initialize();
 #elif UNITY_IOS //&& !UNITY_EDITOR
 
-           // iosVibrationWrapper.PlayCustom();
+           
+#endif
+        }
+
+        public void PlayCustomVibro(CustomVibrationData customVibration)
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            androidVibrationWrapper.AndroidOneShotVibration((long)customVibration.durationInSeconds * 1000, (int)customVibration.amplitude);
+           
+#elif UNITY_IOS //&& !UNITY_EDITOR
+
+            iosVibrationWrapper.PlayCustom(customVibration);
 #endif
             
         }
 
         public void PlayTyped(EVibrationType type)
         {
-#if UNITY_ANDROID //&& !UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
+            androidVibrationWrapper.PlayHaptic(type);
             
-#elif UNITY_IOS //&& !UNITY_EDITOR
+#elif UNITY_IOS && !UNITY_EDITOR
 
             iosVibrationWrapper.PlayHaptic(type);
 #endif
         }
 
-        public void PlayLightImpact()
-        {
-#if UNITY_ANDROID //&& !UNITY_EDITOR
-            androidVibrationWrapper.AndroidOneShotVibration(AndroidPredifinedVariables.lightImpactDuration,AndroidPredifinedVariables.lightImpactAmplitude);
-#elif UNITY_IOS //&& !UNITY_EDITOR
-
-            //iosVibrationWrapper.pla();
-#endif
-
-        }
-
-        public void PlayMediumImpact()
-        {
-            androidVibrationWrapper.AndroidOneShotVibration(AndroidPredifinedVariables.mediumImpactDuration, AndroidPredifinedVariables.mediumImpactAmplitude);
-        }
-
-        public void PlayHeavyImpact()
-        {
-            androidVibrationWrapper.AndroidOneShotVibration(AndroidPredifinedVariables.heavyImpactDuration, AndroidPredifinedVariables.heavyImpactAmplitude);
-        }
-
-        public void PlaySuccessPattern()
-        {
-            androidVibrationWrapper.AndroidWaveformVibration(AndroidPredifinedVariables.successPatternDuration, AndroidPredifinedVariables.successPatternAmplitude);
-        }
-
-        public void PlayWarningPattern()
-        {
-            androidVibrationWrapper.AndroidWaveformVibration(AndroidPredifinedVariables.warningPatternDuration, AndroidPredifinedVariables.warningPatternAmplitude);
-        }
-
-        public void PlayFailurePattern()
-        {
-            androidVibrationWrapper.AndroidWaveformVibration(AndroidPredifinedVariables.failurePatternDuration, AndroidPredifinedVariables.failurePatternAmplitude);
-        }
+        
     }
 }
 

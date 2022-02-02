@@ -2,33 +2,11 @@
 #import <Foundation/Foundation.h>
 #include "UnityFramework/UnityFramework-Swift.h"
 
-
-
-
-
 extern "C" {
     
 #pragma mark - Functions
-    
 
     
-
-    void _StartEngine()
-    {
-        if (@available(iOS 13, *))
-        {
-            [[UnityPlugin shared] StartEngine];
-        }
-    }
-
-    void _PlayTest()
-    {
-        if (@available(iOS 13, *))
-        {
-            [[UnityPlugin shared] PlayTestVib];
-        }
-    }
-
     void _PlayHaptic(int type)
     {
         [[UnityPlugin shared] PlayHapticWithTypeInt:(type)];
@@ -42,11 +20,11 @@ extern "C" {
         }
     }
 
-    bool _IsHapticAvailable()
+    bool _IsCustomHapticAvailable()
     {
         if (@available(iOS 13, *))
         {
-            return  [[UnityPlugin shared] IsHapticAvailable];
+            return  [[UnityPlugin shared] IsHapticCustomAvailable];
         }
         else
         {
