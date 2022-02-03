@@ -94,8 +94,22 @@ import UIKit
         
         type = EVibrationType(rawValue: typeInt);
         
+        if #available(iOS 10.0, *) {
+            PlayCoolHaptic(hType : type);
+        } else {
+            PlayHapticIphone6(hType : type);
+        }
+
+    }
+    
+    @objc public func PlayCoolHaptic(hType : EVibrationType) -> Void
+    {
+        //var type : EVibrationType!;
         
-        switch(type)
+        //type = EVibrationType(rawValue: typeInt);
+        
+        
+        switch(hType)
         {
             case .LightImpact:
             
@@ -134,14 +148,10 @@ import UIKit
      
     }
     
-    public func PlayHapticIphone6(typeInt : Int) -> Void
+    public func PlayHapticIphone6(hType : EVibrationType) -> Void
     {
-        var type : EVibrationType!;
-        
-        type = EVibrationType(rawValue: typeInt);
-        
        
-        switch(type)
+        switch(hType)
         {
             case .LightImpact:
             
