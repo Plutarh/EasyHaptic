@@ -19,11 +19,15 @@ public sealed class IosVibrationWrapper
 
     public void PlayCustom(CustomVibrationData customVibration)
     {
+#if UNITY_IOS
         _PlayCustom(customVibration.amplitude, customVibration.sharpness, customVibration.durationInSeconds);
+#endif
     }
 
     public void PlayHaptic(EVibrationType type)
     {
+#if UNITY_IOS
         _PlayHaptic((int)type);
+#endif
     }
 }

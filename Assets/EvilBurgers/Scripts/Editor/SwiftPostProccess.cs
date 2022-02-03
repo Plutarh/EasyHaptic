@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_IOS
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
@@ -16,7 +16,7 @@ using System.Linq;
 
 public static class SwiftPostProccess
 {
-#if UNITY_EDITOR
+#if UNITY_EDITOR  && UNITY_IOS
 
     [PostProcessBuild]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
