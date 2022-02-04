@@ -5,30 +5,66 @@ using EasyHaptic_EvilBurgers;
 using UnityEngine.UI;
 using System;
 
+#if UNITY_IOS 
+using UnityEngine.iOS;
+#endif
+
 public class Test : MonoBehaviour
 {
 
-    public InputField millisecondsInput;
-    public InputField amplitudeInput;
-    public InputField sharpnessInput;
+    [SerializeField] private InputField millisecondsInput;
+    [SerializeField] private InputField amplitudeInput;
+    [SerializeField] private InputField sharpnessInput;
 
-    public Text amplitudeControll;
+    [SerializeField] private Text systemInfo;
+    [SerializeField] private Button btnPrefab;
+    [SerializeField] private Gradient buttonsColor;
+    [SerializeField] private GameObject buttonsGroup;
 
-    public Button btnPrefab;
-
-    public Gradient buttonsColor;
-
-    public GameObject buttonsGroup;
 
     List<Button> allButtons = new List<Button>();
 
+    [SerializeField] CustomVibrationData data;
+
     private void Awake() 
     {
-        CreateTestButtons();
-        SetButtonsColor();
+        Init();
     }
 
-    void CreateTestButtons()
+    public void PlayCustomVibration()
+    {
+        long customDurationInSeconds = 0;
+        float customAmplitude = 0;
+        float sharpness = 0;
+
+        long.TryParse(millisecondsInput.text, out customDurationInSeconds);
+        float.TryParse(amplitudeInput.text, out customAmplitude);
+        float.TryParse(sharpnessInput.text, out sharpness);
+
+        CustomVibrationData customData = new CustomVibrationData();
+        customData.amplitude = customAmplitude;
+        customData.durationInSeconds = customDurationInSeconds;
+        customData.sharpness = sharpness;
+
+        Debug.Log($"Try play custom vibro - {customData}");
+
+        EasyHaptic.PlayCustom(customData);
+    }
+
+    void Init()
+    {
+#if UNITY_ANDROID
+        sharpnessInput.gameObject.SetActive(false);
+#elif UNITY_IOS
+        sharpnessInput.gameObject.SetActive(true);
+#endif
+
+        CreatePredifinedButtons();
+        SetButtonsColor();
+        ShowSystemInfo();
+    }
+
+    void CreatePredifinedButtons()
     {
         foreach (EVibrationType type in (EVibrationType[])Enum.GetValues(typeof(EVibrationType)))
         {
@@ -45,6 +81,12 @@ public class Test : MonoBehaviour
 
     void SetButtonsColor()
     {
+        if(allButtons.Count == 0)
+        {
+            Debug.LogError("Predifined buttons not created, please check all prefab refs");
+            return;
+        }
+
         for (int i = 0; i < allButtons.Count; i++)
         {
             var btn = allButtons[i];
@@ -55,21 +97,27 @@ public class Test : MonoBehaviour
         }
     }
 
-    public void PlayCustom()
+    void ShowSystemInfo()
     {
-        long customDurationInSeconds = 0;
-        int customAmplitude = 0;
-        float sharpness = 0;
+        string deviceOS = "Cant read";
 
-        customDurationInSeconds = long.Parse(millisecondsInput.text);
-        customAmplitude = int.Parse(amplitudeInput.text);
-        sharpness = float.Parse(sharpnessInput.text);
+        deviceOS = SystemInfo.operatingSystem;
 
-        CustomVibrationData customData = new CustomVibrationData();
-        customData.amplitude = customAmplitude;
-        customData.durationInSeconds = customDurationInSeconds;
-        customData.sharpness = sharpness;
+        /*
 
-        EasyHaptic.PlayCustom(customData);
+#if !UNITY_ANDROID
+        deviceOS = SystemInfo.operatingSystem;
+#elif UNITY_IOS
+        deviceOS = Device.systemVersion;
+#endif
+        */
+
+
+        string sysInfo = $"Device Name - {SystemInfo.deviceName} \n ";
+        sysInfo += $"Device model - {SystemInfo.deviceModel} \n";
+        sysInfo += $"OS version - {deviceOS}";
+        systemInfo.text = sysInfo;
     }
+
+    
 }

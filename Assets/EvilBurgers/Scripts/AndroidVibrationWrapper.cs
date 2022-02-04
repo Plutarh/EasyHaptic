@@ -15,15 +15,13 @@ namespace EasyHaptic_EvilBurgers
         internal bool isActivityInitialized;
         internal bool isVibroInitialized;
 #endif
-
+        // Initialization main modules
         public void Initialize()
         {
 #if UNITY_ANDROID
             InitMainActivity();
             InitVibration();
-
 #endif
-
         }
 
         public void PlayHaptic(EVibrationType type)

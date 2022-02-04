@@ -20,7 +20,6 @@ import UIKit
     
     @objc public static let shared = UnityPlugin()
     
-    
     @available(iOS 13.0, *)
     @objc public func IsHapticCustomAvailable() -> Bool
     {
@@ -99,15 +98,10 @@ import UIKit
         } else {
             PlayHapticIphone6(hType : type);
         }
-
     }
     
     @objc public func PlayCoolHaptic(hType : EVibrationType) -> Void
     {
-        //var type : EVibrationType!;
-        
-        //type = EVibrationType(rawValue: typeInt);
-        
         
         switch(hType)
         {
