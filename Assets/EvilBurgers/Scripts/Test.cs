@@ -99,14 +99,20 @@ public class Test : MonoBehaviour
     void ShowSystemInfo()
     {
         string customUse = " Cannot support custom vibrations";
-        string androidAmplitudeController = "not support";
 
         string sysInfo = $"Device Name - {SystemInfo.deviceName} \n ";
         sysInfo += $"Device model - {SystemInfo.deviceModel} \n";
         sysInfo += $"OS version - {SystemInfo.operatingSystem}";
 
 #if UNITY_ANDROID
+        string androidAmplitudeController = "not support";
         bool amplitudeSupport = EasyHaptic.vibrationEngine.SupportAmplitudeController();
+
+        if (amplitudeSupport)
+            androidAmplitudeController = "<color=green>Support</color>";
+        else
+            androidAmplitudeController = "<color=red>Not Support</color> \n <color=yellow> You can play with duration value</color>";
+
         sysInfo += $" \n \n \n Amplitude Controller - {androidAmplitudeController}";
 #endif
         systemInfo.text = sysInfo;
