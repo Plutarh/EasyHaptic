@@ -99,23 +99,17 @@ public class Test : MonoBehaviour
 
     void ShowSystemInfo()
     {
-        string deviceOS = "Cant read";
-
-        deviceOS = SystemInfo.operatingSystem;
-
-        /*
-
-#if !UNITY_ANDROID
-        deviceOS = SystemInfo.operatingSystem;
-#elif UNITY_IOS
-        deviceOS = Device.systemVersion;
-#endif
-        */
-
+        string customUse = " Cannot support custom vibrations";
+        string androidAmplitudeController = "not support";
 
         string sysInfo = $"Device Name - {SystemInfo.deviceName} \n ";
         sysInfo += $"Device model - {SystemInfo.deviceModel} \n";
-        sysInfo += $"OS version - {deviceOS}";
+        sysInfo += $"OS version - {SystemInfo.operatingSystem}";
+
+#if UNITY_ANDROID
+        bool amplitudeSupport = EasyHaptic.vibrationEngine.SupportAmplitudeController();
+        sysInfo += $" \n \n \n Amplitude Controller - {androidAmplitudeController}";
+#endif
         systemInfo.text = sysInfo;
     }
 

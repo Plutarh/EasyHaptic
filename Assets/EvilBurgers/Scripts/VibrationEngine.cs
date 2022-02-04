@@ -52,6 +52,14 @@ namespace EasyHaptic_EvilBurgers
 #endif
         }
 
+        public bool SupportAmplitudeController()
+        {
+#if UNITY_ANDROID
+            return androidVibrationWrapper.HasAmplitudeControl();
+#endif
+            return false;
+        }
+
         
     }
 }
