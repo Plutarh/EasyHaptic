@@ -31,6 +31,11 @@ namespace EasyHaptic_EvilBurgers
 
 #elif UNITY_IOS && !UNITY_EDITOR
             int lerpedAmplitude = (int)Mathf.Lerp(0, 1, (float)customVibration.amplitude / 100f);
+            customVibration.amplitude = lerpedAmplitude;
+
+            int lerpedSharpness = (int)Mathf.Lerp(0, 1, (float)customVibration.sharpness / 100f);
+            customVibration.sharpness = lerpedSharpness;
+
             iosVibrationWrapper.PlayCustom(customVibration);
 #endif
 

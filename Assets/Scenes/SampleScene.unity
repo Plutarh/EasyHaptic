@@ -2092,7 +2092,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter sharp between 0f -1f
+  m_Text: Enter sharp value Between  0-100
 --- !u!222 &1955376261
 CanvasRenderer:
   m_ObjectHideFlags: 0
