@@ -158,6 +158,8 @@ namespace EasyHaptic_EvilBurgers
         public void StopVibration()
         {
 #if UNITY_ANDROID
+            if (androidVibrator == null) Initialize();
+            
             if(isVibroInitialized)
                 androidVibrator.Call("cancel");
             else
@@ -168,6 +170,7 @@ namespace EasyHaptic_EvilBurgers
         public bool HasAmplitudeControl()
         {
 #if UNITY_ANDROID
+            if (androidVibrator == null) Initialize();
             return androidVibrator.Call<bool>("hasAmplitudeControl");
 #endif
             return false;
@@ -176,6 +179,7 @@ namespace EasyHaptic_EvilBurgers
         public bool HasVibrator()
         {
 #if UNITY_ANDROID
+            if(androidVibrator == null) Initialize();
             return androidVibrator.Call<bool>("hasVibrator");
 #endif
             return false;

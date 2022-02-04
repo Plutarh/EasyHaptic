@@ -26,8 +26,7 @@ public class Test : MonoBehaviour
 
     [SerializeField] CustomVibrationData data;
 
-    private void Awake() 
-    {
+    private void Start() {
         Init();
     }
 
