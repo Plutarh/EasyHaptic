@@ -9,9 +9,8 @@ using System;
 using UnityEngine.iOS;
 #endif
 
-public class Test : MonoBehaviour
+public class EasyHapticExample : MonoBehaviour
 {
-
     [SerializeField] private InputField millisecondsInput;
     [SerializeField] private InputField amplitudeInput;
     [SerializeField] private InputField sharpnessInput;
@@ -21,15 +20,14 @@ public class Test : MonoBehaviour
     [SerializeField] private Gradient buttonsColor;
     [SerializeField] private GameObject buttonsGroup;
 
-
     List<Button> allButtons = new List<Button>();
 
-    [SerializeField] CustomVibrationData data;
-
-    private void Start() {
+    private void Start()
+    {
         Init();
     }
 
+    // Play custom vibration by InputField variables
     public void PlayCustomVibration()
     {
         long customDurationInSeconds = 0;
@@ -45,14 +43,10 @@ public class Test : MonoBehaviour
         customData.durationInSeconds = customDurationInSeconds;
         customData.sharpness = sharpness;
 
-        Debug.Log($"Try play custom vibro - {customData}");
-
-        int androidLerpAmplitude = (int)Mathf.Lerp(0, 255, (float)customData.amplitude / 100f);
-        Debug.LogError("ampl " + androidLerpAmplitude);
-
         EasyHaptic.PlayCustom(customData);
     }
 
+    // Main example initialize
     void Init()
     {
 #if UNITY_ANDROID
@@ -66,11 +60,12 @@ public class Test : MonoBehaviour
         ShowSystemInfo();
     }
 
+    // Create UI buttons for each vibration type
     void CreatePredifinedButtons()
     {
         foreach (EVibrationType type in (EVibrationType[])Enum.GetValues(typeof(EVibrationType)))
         {
-            Button createdBtn = Instantiate(btnPrefab,buttonsGroup.transform);
+            Button createdBtn = Instantiate(btnPrefab, buttonsGroup.transform);
 
             createdBtn.GetComponentInChildren<Text>().text = type.ToString();
 
@@ -81,9 +76,10 @@ public class Test : MonoBehaviour
         btnPrefab.gameObject.SetActive(false);
     }
 
+    // Set buttons color for clear view and understand
     void SetButtonsColor()
     {
-        if(allButtons.Count == 0)
+        if (allButtons.Count == 0)
         {
             Debug.LogError("Predifined buttons not created, please check all prefab refs");
             return;
@@ -99,6 +95,7 @@ public class Test : MonoBehaviour
         }
     }
 
+    // Show device system info
     void ShowSystemInfo()
     {
         string customUse = " Cannot support custom vibrations";
@@ -121,5 +118,4 @@ public class Test : MonoBehaviour
         systemInfo.text = sysInfo;
     }
 
-    
 }

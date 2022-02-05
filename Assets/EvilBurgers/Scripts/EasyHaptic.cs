@@ -5,7 +5,12 @@ namespace EasyHaptic_EvilBurgers
     public static class EasyHaptic
     {
         public static VibrationEngine vibrationEngine = new VibrationEngine();
-        public static bool hapticOn = true;
+
+        public static bool hapticOn
+        {
+            get => PlayerPrefs.GetInt("EasyHapticTurnOn", 1) > 0 ? true : false;
+            set => PlayerPrefs.SetInt("EasyHapticTurnOn", value == true ? 1 : 0);
+        }
 
         /// <summary>
         /// Play vibration by EVibrationType

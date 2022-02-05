@@ -18,7 +18,7 @@ namespace EasyHaptic_EvilBurgers
         // Initialization main modules
         public void Initialize()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             InitMainActivity();
             InitVibration();
 #endif
@@ -26,7 +26,7 @@ namespace EasyHaptic_EvilBurgers
 
         public void PlayHaptic(EVibrationType type)
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
 
             switch (type)
             {
@@ -55,7 +55,7 @@ namespace EasyHaptic_EvilBurgers
         // Play one shot vibration 
         public void AndroidOneShotVibration(long milliseconds, int amplitude)
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
 
             Initialize();
 
@@ -75,7 +75,7 @@ namespace EasyHaptic_EvilBurgers
         // Play waveform vibration
         public void AndroidWaveformVibration(long[] millisecondsPattern, int[] amplitudesPattern, int repeat = -1)
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             Initialize();
 
             if (GetApiLevel() > 26)
@@ -93,7 +93,7 @@ namespace EasyHaptic_EvilBurgers
         // Connection to android activity stream
         void InitMainActivity()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             if(unityPlayerActivity != null && currentActivity != null) return;
 
             // Get unity android stream
@@ -119,7 +119,7 @@ namespace EasyHaptic_EvilBurgers
         // Connection to android.os.VibrationEffect class
         void InitVibration()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             if (isActivityInitialized == false)
             {
                 Initialize();
@@ -146,7 +146,7 @@ namespace EasyHaptic_EvilBurgers
 
         public static int GetApiLevel()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             using (var version = new AndroidJavaClass("android.os.Build$VERSION"))
             {
                 return version.GetStatic<int>("SDK_INT");
@@ -157,7 +157,7 @@ namespace EasyHaptic_EvilBurgers
 
         public void StopVibration()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             if (androidVibrator == null) Initialize();
             
             if(isVibroInitialized)
@@ -169,7 +169,7 @@ namespace EasyHaptic_EvilBurgers
 
         public bool HasAmplitudeControl()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             if (androidVibrator == null) Initialize();
             return androidVibrator.Call<bool>("hasAmplitudeControl");
 #endif
@@ -178,7 +178,7 @@ namespace EasyHaptic_EvilBurgers
 
         public bool HasVibrator()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             if(androidVibrator == null) Initialize();
             return androidVibrator.Call<bool>("hasVibrator");
 #endif
