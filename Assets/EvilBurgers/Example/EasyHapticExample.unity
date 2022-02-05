@@ -730,8 +730,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Test, Assembly-CSharp
+      - m_Target: {fileID: 978281235}
+        m_TargetAssemblyTypeName: EasyHapticExample, Assembly-CSharp
         m_MethodName: PlayCustomVibration
         m_Mode: 1
         m_Arguments:
