@@ -32,10 +32,10 @@ namespace EasyHaptic_EvilBurgers
             androidVibrationWrapper.AndroidOneShotVibration((long)customVibration.durationInSeconds * 1000, androidLerpAmplitude);
 
 #elif UNITY_IOS && !UNITY_EDITOR
-            int lerpedAmplitude = (int)Mathf.Lerp(0, 1, (float)customVibration.amplitude / 100f);
+            float lerpedAmplitude = Mathf.Lerp(0, 1, (float)customVibration.amplitude / 100f);
             customVibration.amplitude = lerpedAmplitude;
 
-            int lerpedSharpness = (int)Mathf.Lerp(0, 1, (float)customVibration.sharpness / 100f);
+            float lerpedSharpness = Mathf.Lerp(0, 1, (float)customVibration.sharpness / 100f);
             customVibration.sharpness = lerpedSharpness;
 
             iosVibrationWrapper.PlayCustom(customVibration);
