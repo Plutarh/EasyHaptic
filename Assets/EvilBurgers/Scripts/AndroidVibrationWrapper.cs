@@ -59,7 +59,7 @@ namespace EasyHaptic_EvilBurgers
 
             Initialize();
 
-            if(GetApiLevel() > 26)
+            if(GetApiLevel() >= 26)
             {
                 AndroidJavaObject vibration = vibrationEffect.CallStatic<AndroidJavaObject>("createOneShot", new object[] { milliseconds, amplitude });
                 androidVibrator.Call("vibrate", vibration);

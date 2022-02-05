@@ -47,6 +47,9 @@ public class Test : MonoBehaviour
 
         Debug.Log($"Try play custom vibro - {customData}");
 
+        int androidLerpAmplitude = (int)Mathf.Lerp(0, 255, (float)customData.amplitude / 100f);
+        Debug.LogError("ampl " + androidLerpAmplitude);
+
         EasyHaptic.PlayCustom(customData);
     }
 
