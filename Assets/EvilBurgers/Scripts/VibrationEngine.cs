@@ -30,8 +30,8 @@ namespace EasyHaptic_EvilBurgers
             int androidLerpAmplitude = (int)Mathf.Lerp(0, 255, (float)customVibration.amplitude / 100f);
             customVibration.amplitude = androidLerpAmplitude;
 
-            long duration = Convert.ToInt64(customVibration.durationInSeconds * 1000f);
-            
+            long duration = Convert.ToInt64(customVibration.durationInSeconds * 1000);
+
             androidVibrationWrapper.AndroidOneShotVibration(duration, androidLerpAmplitude);
 
 #elif UNITY_IOS && !UNITY_EDITOR
