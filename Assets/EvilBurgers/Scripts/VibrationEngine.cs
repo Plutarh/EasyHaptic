@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
+using System;
 #if UNITY_IOS
 using UnityEngine.iOS;
 #endif
@@ -28,8 +29,10 @@ namespace EasyHaptic_EvilBurgers
 
             int androidLerpAmplitude = (int)Mathf.Lerp(0, 255, (float)customVibration.amplitude / 100f);
             customVibration.amplitude = androidLerpAmplitude;
+
+            long duration = Convert.ToInt64(customVibration.durationInSeconds * 1000f);
             
-            androidVibrationWrapper.AndroidOneShotVibration((long)customVibration.durationInSeconds * 1000, androidLerpAmplitude);
+            androidVibrationWrapper.AndroidOneShotVibration(duration, androidLerpAmplitude);
 
 #elif UNITY_IOS && !UNITY_EDITOR
             float lerpedAmplitude = Mathf.Lerp(0, 1, (float)customVibration.amplitude / 100f);

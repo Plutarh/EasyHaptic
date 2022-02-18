@@ -30,11 +30,13 @@ public class EasyHapticExample : MonoBehaviour
     // Play custom vibration by InputField variables
     public void PlayCustomVibration()
     {
-        long customDurationInSeconds = 0;
+        float customDurationInSeconds = 0;
         float customAmplitude = 0;
         float sharpness = 0;
 
-        long.TryParse(millisecondsInput.text, out customDurationInSeconds);
+        millisecondsInput.text = millisecondsInput.text.Replace('.',',');
+      
+        float.TryParse(millisecondsInput.text,out customDurationInSeconds);
         float.TryParse(amplitudeInput.text, out customAmplitude);
         float.TryParse(sharpnessInput.text, out sharpness);
 
@@ -43,6 +45,7 @@ public class EasyHapticExample : MonoBehaviour
         customData.durationInSeconds = customDurationInSeconds;
         customData.sharpness = sharpness;
 
+        Debug.LogError($"dur {customDurationInSeconds} - {millisecondsInput.text} /// {customDurationInSeconds * 1000}");
         EasyHaptic.PlayCustom(customData);
     }
 
